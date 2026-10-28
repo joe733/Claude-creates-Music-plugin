@@ -1,0 +1,48 @@
+title Every Mark
+tempo 72
+time 4/4
+key D major
+
+// bars 1–4: harp and pizzicato, the flute sings, the triangle rings
+flute:    rh p (A5q. F#5e) | gC#6 D6q B5q F#5h | (G5q A5q B5q D6q) | C#6h{tr} A5h |
+violin:   R | R | R | rh mp (E5q C#5q) |
+cello:    {pizz} p D3q r A2q r | B2q r F#2q r | G2q r D3q r | A2q r E3q r |
+harp:     p [D3 A3 D4 F#4]h{arp} [D4 F#4 A4]h{arp} | [B2 F#3 B3 D4]h{arp} [B3 D4 F#4]h{arp} | [G2 D3 G3 B3]h{arp} [G3 B3 D4]h{arp} | [A2 E3 A3 C#4]h{arp} [A3 C#4 E4]h{arp} |
+triangle: pp xw | R | xw | R |
+
+bar 5
+// bars 5–8: the bow, the reed and the piano, everything swelling toward bar 9
+flute:    R | R | rh mp (B5q A5q) | A5h. rq |
+violin:   mp < (D5h. E5q | F#5h E5q D5q) | B4q. C#5e D5q G5q | F#5h E5h |
+cello:    {arco} mp < (D3h. C#3q | B2w) | G2h A2h | A2w |
+clarinet: mp (A4h B4h | C#5h A4h) | (B4q A4q G4q B4q | A4w) |
+harp:     mp D3e A3 D4 F#4 A4 F#4 D4 A3 | F#3 A3 C#4 F#4 A4 F#4 C#4 A3 | G3 B3 D4 G4 B4 G4 D4 B3 | A3 C#4 E4 A4 C#5 A4 E4 C#4 |
+piano:    mp ped [D3 A3 F#4]w * | ped [F#2 C#3 A3]w * | ped [G2 D3 B3]w * | ped [A2 E3 C#4 G4]w * |
+drum:     pp A1q r r r | A1q r r r | A1q r r r | A1q r < A1q A1q |
+snare:    R | R | R | p < xw{roll} |
+
+bar 9
+// bars 9–12: everyone, forte, to a held chord
+flute:    f B5q. C#6e D6q F#6q | G6h F#6q E6q | F#6q> D6q> A5q> F#5q> | E6w@ |
+violin:   f B5q.> A5e G5q F#5q | (E5q F#5q G5q B5q) | A5q^ F#5q^ D5q^ A4q^ | C#5w@ |
+cello:    f B2q.> B2e B2q B2q | G2q.> G2e G2q G2q | D3q^ D3q^ F#3q^ F#3q^ | A2w@ |
+clarinet: f F#4q> F#4e F#4e F#4q F#4q | G4q> G4e G4e G4q B4q | A4q^ A4q^ D5q^ F#5q^ | E5w@ |
+harp:     f [B2 F#3 B3 D4]w{arp} | [G2 D3 G3 B3]w{arp} | [D3 A3 D4 F#4]w{arp} | [A2 E3 A3 C#4 E4]w{arp}@ |
+guitar:   f [B2 F#3 B3 D4]h{arp} [B2 F#3 B3 D4]h{arp} | [G2 D3 G3 B3]h{arp} [G2 D3 G3 B3]h{arp} | [D3 A3 D4 F#4]h{arp} [D3 A3 D4 F#4]h{arp} | [A2 E3 A3 C#4]w{arp}@ |
+bass:     f B1e B1 B1 B1 B1 B1 A1 A1 | G1e G1 G1 G1 G1 G1 A1 A1 | D2e' D2' D2' D2' F#2' F#2' F#2' F#2' | A1w@ |
+organ:    {stop:full} f [B2 D3 F#3 B3]w | [G2 B2 D3 G3]w | [D3 F#3 A3 D4]w | [A2 C#3 E3 A3]w@ |
+drum:     f D2q> r A1q r | D2q> r A1q A1q | D2q^ D2q^ D2q^ D2q^ | A1w{roll}@ |
+snare:    f xq r xq{rim} r | xq r xq{flam} xe xe | x'e x' x' x' x' x' x' x' | xw{roll}@ |
+triangle: f x'q x' x' x' | x'q x' x' x' | xw | xw@ |
+
+bar 13
+// bars 13–16: slower, quieter, home
+flute:    tempo=64 R | rh pp (F#5q E5q) | rit (E5h D5h) | D5w@ |
+violin:   p {mute} (B4h A4h) | (F#4h. A4q) | E6h{harm} D6h{harm} | pp D6w{harm}@ |
+cello:    p G2w | D3w | (E3h A2h) | pp D2w@ |
+clarinet: R | p (A4h F#4h | G4h E4h) | F#4w@ |
+harp:     p D4h{gliss} D5h | [D3 A3 F#4]w{arp} | [E3 G3 B3]h{arp} [A2 E3 C#4]h{arp} | pp [D2 A2 D3 F#3 A3 D4]w{arp}@ |
+piano:    p ped [G3 B3 D4]w * | ped [D3 F#3 A3 D4]w * | ped [E3 G3 B3]h A4h{tr} * | ppp ped [D3 A3 D4 F#4 A4]w{arp}@ * |
+organ:    {stop:flute} pp [G3 B3 D4]w | [F#3 A3 D4]w | [E3 G3 B3]h [E3 A3 C#4]h | [D3 F#3 A3]w@ |
+drum:     pp A1h r | R | R | R |
+triangle: R | R | R | ppp xw@ |

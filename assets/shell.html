@@ -1,0 +1,223 @@
+<title>{{TITLE}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* The hall from above. The page is an architect's plan of a concert stage, printed on pale plan paper by day and as a
+   cyanotype by night: ink lines, risers as arcs, chairs where the players sit, organ pipes cut to their true lengths along
+   the back wall. The one warm thing is the stage light: it comes up on a chair while that instrument plays.
+   Two faces only: a geometric sans for the plan's lettering, a book serif for anything read as prose. Colours as hsl. */
+:root{
+  --paper:hsl(204 33% 95%);--sheet:hsl(204 40% 98.5%);--ink:hsl(214 58% 19%);--dim:hsl(212 22% 38%);--line:hsl(208 30% 80%);--staff:hsl(208 26% 62%);
+  --light:hsl(30 88% 40%);--glow:30 92% 52%;--wash:hsl(30 88% 40% / .09);--keyw:hsl(204 40% 99%);--keyb:hsl(214 58% 19%);
+  --plan:"Avenir Next","Avenir","Futura","Century Gothic","URW Gothic","Gill Sans","Gill Sans MT",ui-sans-serif,sans-serif;
+  --prose:"Iowan Old Style","Palatino Linotype","Palatino","Book Antiqua",Georgia,serif;
+  --code:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:hsl(214 52% 13%);--sheet:hsl(214 46% 16.5%);--ink:hsl(204 45% 91%);--dim:hsl(206 26% 70%);--line:hsl(212 32% 30%);--staff:hsl(208 25% 52%);
+  --light:hsl(38 95% 62%);--glow:40 100% 64%;--wash:hsl(38 95% 62% / .1);--keyw:hsl(204 30% 86%);--keyb:hsl(214 52% 13%);color-scheme:dark}}
+:root[data-theme="dark"]{--paper:hsl(214 52% 13%);--sheet:hsl(214 46% 16.5%);--ink:hsl(204 45% 91%);--dim:hsl(206 26% 70%);--line:hsl(212 32% 30%);--staff:hsl(208 25% 52%);
+  --light:hsl(38 95% 62%);--glow:40 100% 64%;--wash:hsl(38 95% 62% / .1);--keyw:hsl(204 30% 86%);--keyb:hsl(214 52% 13%);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:17px/1.62 var(--prose);margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--light);outline-offset:2px}
+
+/* the masthead: what is playing, as large as the plan allows */
+header.wrap{padding-block:34px 6px}
+.house{font:500 15px/1.3 var(--plan);color:var(--dim);margin:0 0 14px;letter-spacing:.02em}
+h1{font:500 clamp(40px,7.2vw,92px)/.98 var(--plan);margin:0;letter-spacing:-.022em;text-wrap:balance;max-width:16ch}
+.byline{font:italic 17px/1.5 var(--prose);color:var(--dim);margin:14px 0 0;max-width:68ch}
+
+/* the transport stays to hand */
+.transport{position:sticky;top:0;z-index:5;background:color-mix(in hsl,var(--paper) 92%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.transport .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-block:10px}
+.go{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;background:var(--ink);color:var(--paper);padding:9px 20px 9px 16px;font:600 15px/1 var(--plan);cursor:pointer}
+.go svg{width:14px;height:14px;fill:currentColor}
+.readout{font:500 15px/1.2 var(--plan);font-variant-numeric:tabular-nums;color:var(--ink);display:flex;gap:16px;flex-wrap:wrap}
+.readout span{color:var(--dim)}
+.vol{display:flex;align-items:center;gap:8px;font:500 14px var(--plan);color:var(--dim);margin-left:auto}
+.vol input{width:120px;accent-color:hsl(30 88% 44%)}
+.status{font:15px/1.4 var(--prose);font-style:italic;color:var(--dim);flex-basis:100%;margin:0;min-height:1.4em}
+
+/* the stage and the chair beside it */
+.hall{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:22px;align-items:start;padding-block:22px 6px}
+.plan{position:relative;min-width:0}
+#stage{display:block;width:100%;height:auto;touch-action:manipulation}
+#stage .riser{fill:none;stroke:var(--line);stroke-width:1.2}
+#stage .wall{fill:none;stroke:var(--ink);stroke-width:1.6}
+#stage .note{font:500 13px var(--plan);fill:var(--dim)}
+#stage .seat{cursor:pointer}
+#stage .seat .body{fill:var(--sheet);stroke:var(--ink);stroke-width:1.6}
+#stage .seat .lamp{fill:hsl(var(--glow));pointer-events:none}
+#stage .seat text{font:500 15px var(--plan);fill:var(--ink);text-anchor:middle;pointer-events:none}
+#stage .seat.empty .body{stroke:var(--staff);stroke-dasharray:3 4}
+#stage .seat.empty text{fill:var(--dim)}
+#stage .seat.out .body{stroke-dasharray:2 5}
+#stage .seat.out text{text-decoration:line-through;fill:var(--dim)}
+#stage .seat.chosen .body{stroke:var(--light);stroke-width:3.4}
+#stage .seat:focus{outline:none}
+#stage .seat:focus-visible .body{stroke:var(--light);stroke-width:3.4}
+#stage .pipe{fill:var(--sheet);stroke:var(--ink);stroke-width:1.2}
+#stage .pipelamp{fill:hsl(var(--glow));pointer-events:none}
+#stage .organ.empty .pipe{stroke:var(--staff);stroke-dasharray:3 4}
+@media (max-width:640px){#stage .seat text{font-size:30px}#stage .note{font-size:24px}}
+.plancap{font:15px/1.5 var(--prose);color:var(--dim);margin:6px 0 0;max-width:60ch}
+aside.chair{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;min-width:0;position:sticky;top:96px}
+.chair h2{font:500 30px/1.05 var(--plan);margin:0;letter-spacing:-.01em}
+.chair .fam{font:500 15px var(--plan);color:var(--dim);margin:4px 0 12px}
+.chair p{margin:0 0 12px;font-size:16px;line-height:1.55}
+.chair .meas{font-size:14.5px;color:var(--dim)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.pill{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:6px 13px;cursor:pointer;font:500 14px/1 var(--plan)}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.pill.quiet{border-color:var(--line)}
+.kb{display:block;width:100%;height:64px;cursor:pointer;margin:2px 0 12px;border-radius:4px}
+.fader{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;font:500 14px var(--plan);color:var(--dim);margin:6px 0 12px}
+.fader input{width:100%;accent-color:hsl(30 88% 44%)}
+.fader output{font-variant-numeric:tabular-nums;color:var(--ink);min-width:5ch;text-align:right}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0 0 12px;font-size:16px}
+.facts dt{font:500 14.5px/1.6 var(--plan);color:var(--dim)}
+.facts dd{margin:0}
+
+/* the ear and the roll: the whole piece left to right */
+section.wrap{padding-block:26px 6px}
+h2.sec{font:500 clamp(24px,3vw,32px)/1.1 var(--plan);margin:0 0 6px;letter-spacing:-.01em}
+.lead{margin:0 0 14px;color:var(--dim);max-width:72ch;font-size:16px}
+.timeline{background:var(--sheet);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+#ear{display:block;width:100%;height:86px}
+#roll{display:block;width:100%;height:250px;cursor:pointer;border-top:1px solid var(--line)}
+.earsays{font:15px/1.5 var(--prose);color:var(--dim);margin:10px 0 0;max-width:80ch}
+
+/* the desk: the score as text beside its engraving */
+.desk{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;align-items:start}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+#score{width:100%;height:500px;resize:vertical;font:13px/1.55 var(--code);color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px;white-space:pre;overflow:auto;tab-size:2}
+.warn{margin:8px 0 0;padding:0;list-style:none;font:14px/1.5 var(--prose);color:var(--light)}
+.engr{background:var(--sheet);border:1px solid var(--line);border-radius:10px;min-width:0}
+.engr .cap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 14px 0;font:500 14px var(--plan);color:var(--dim)}
+.staffbox{overflow-x:auto;overflow-y:hidden;padding:4px 0 8px;position:relative}
+#staff{display:block}
+#staffhead{position:absolute;top:4px;width:2px;background:var(--light);opacity:.8;pointer-events:none;display:none}
+
+/* versions: the piece as it grew */
+.versions{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:14px}
+.ver{all:unset;box-sizing:border-box;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;width:100%;background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left}
+.ver:focus-visible{outline:2px solid var(--light);outline-offset:2px}
+.ver[aria-current="true"]{border-color:var(--light);box-shadow:inset 0 0 0 1px var(--light)}
+.ver .n{grid-row:span 2;font:500 40px/1 var(--plan);color:var(--dim);font-variant-numeric:tabular-nums}
+.ver[aria-current="true"] .n{color:var(--light)}
+.ver b{font:500 17px/1.3 var(--plan)}
+.ver span{font:15px/1.45 var(--prose);color:var(--dim)}
+.vnotes{margin:16px 0 0;max-width:74ch}
+.vnotes p{margin:0 0 10px}
+.evolve{margin:14px 0 0;padding:14px 16px;border-left:3px solid var(--light);background:var(--wash);border-radius:0 10px 10px 0;max-width:74ch;font-size:16px}
+.evolve p{margin:0}
+
+/* every mark, folded away until wanted */
+details.marks>summary{cursor:pointer;font:500 clamp(22px,2.6vw,28px)/1.2 var(--plan);list-style:none;display:flex;align-items:center;gap:12px}
+details.marks>summary::-webkit-details-marker{display:none}
+details.marks>summary::before{content:"";width:12px;height:12px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-45deg);transition:transform .2s}
+details.marks[open]>summary::before{transform:rotate(45deg)}
+.group{font:500 18px var(--plan);margin:26px 0 10px;color:var(--light)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px}
+.mark{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;display:grid;gap:8px;min-width:0;align-content:start}
+.mark .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mark b{font:500 17px/1.25 var(--plan)}
+.ink{overflow-x:auto;overflow-y:hidden;min-width:0}
+.mark canvas{display:block}
+.mark code{font:12.5px/1.45 var(--code);color:var(--dim);white-space:pre-wrap;word-break:break-word}
+.mark p{margin:0;font-size:15px;line-height:1.5}
+.play{border:1px solid var(--ink);background:transparent;border-radius:50%;width:34px;height:34px;flex:none;cursor:pointer;display:grid;place-items:center}
+.play svg{width:12px;height:12px;fill:currentColor}
+.play[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+footer.wrap{padding-block:34px 70px;color:var(--dim);font-size:15.5px;border-top:1px solid var(--line);margin-top:34px}
+footer p{max-width:76ch;margin:0 0 12px}
+code.k{font:13.5px var(--code);color:var(--ink)}
+@media (max-width:980px){.hall{grid-template-columns:1fr}aside.chair{position:static}.desk{grid-template-columns:1fr}#score{height:340px}.vol{margin-left:0}}
+@media (prefers-reduced-motion:reduce){details.marks>summary::before{transition:none}}
+</style>
+
+<header class="wrap">
+  <p class="house">Orchestra of Numbers</p>
+  <h1 id="title">{{TITLE}}</h1>
+  <p class="byline" id="byline"></p>
+</header>
+
+<div class="transport">
+  <div class="wrap">
+    <button class="go" id="play" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="playicon" d="M6 4v16l14-8z"/></svg><span id="playlabel">Play</span></button>
+    <div class="readout" aria-live="off"><b id="clock">0:00</b><span id="whereabouts">bar 1</span></div>
+    <label class="vol" for="vol">Volume <input id="vol" type="range" min="0" max="100" value="50"> <span id="volv">50%</span></label>
+    <p class="status" id="status" role="status"></p>
+  </div>
+</div>
+
+<div class="wrap hall">
+  <div class="plan">
+    <svg id="stage" viewBox="0 -60 1000 750" role="group" aria-label="The stage from above. Each chair is an instrument; it lights while that instrument plays. Choose a chair to meet its instrument."></svg>
+    <p class="plancap">The hall from above, the audience at the foot of the plan. The organ’s pipes along the back wall are cut to their true lengths, each a whole tone from the next. A chair lights while its instrument plays.</p>
+  </div>
+  <aside class="chair" id="chair" aria-live="polite"></aside>
+</div>
+
+<section class="wrap" aria-labelledby="time-h">
+  <h2 class="sec" id="time-h">The whole piece</h2>
+  <p class="lead">Above, how loud the piece sounded to the ear Claude listens with, and where it turned rough. Below, every note: time runs left to right and pitch upward. Click anywhere to play from there.</p>
+  <div class="timeline"><canvas id="ear" role="img" aria-label="Loudness over time, as the ear heard it."></canvas><canvas id="roll" role="img" aria-label="Every note in the score, by time and pitch. Click to play from that point."></canvas></div>
+  <p class="earsays" id="earsays"></p>
+</section>
+
+<section class="wrap" aria-labelledby="desk-h">
+  <h2 class="sec" id="desk-h">The score</h2>
+  <p class="lead">Written in Stave: a line for each player, an instrument, a colon, then the notes, with <code class="k">|</code> for bar lines. Change anything and press play. The staff shows the voice your cursor is in, or the chair you chose.</p>
+  <div class="desk">
+    <div>
+      <div class="tools">
+        <button class="pill" id="copy" type="button">Copy the score</button>
+        <button class="pill" id="save" type="button">Save as a file</button>
+        <button class="pill" id="open" type="button">Open a file</button>
+        <button class="pill quiet" id="restore" type="button">Put this version back</button>
+        <input id="file" type="file" accept=".stave,.txt,text/plain" hidden>
+      </div>
+      <textarea id="score" spellcheck="false" aria-label="The score, written in Stave"></textarea>
+      <ul class="warn" id="warn"></ul>
+    </div>
+    <div class="engr"><div class="cap"><span id="staffname">The staff</span><span>drawn from the same reading the sound comes from</span></div><div class="staffbox" id="staffbox"><canvas id="staff" role="img" aria-label="The chosen voice, engraved."></canvas><div id="staffhead"></div></div></div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="ver-h">
+  <h2 class="sec" id="ver-h">How the piece grew</h2>
+  <p class="lead">Each version is kept whole. Choose one to hear it, read what changed, and see what the ear made of it.</p>
+  <ol class="versions" id="versions"></ol>
+  <div class="vnotes" id="vnotes"></div>
+  <div class="evolve"><p>To grow it further, copy the score, give it to Claude with what you would like different, and ask it to listen. Claude writes the next version, hears it with the same ear, and builds this page again with every version kept.</p></div>
+</section>
+
+<section class="wrap">
+  <details class="marks" id="marks"><summary>Every mark Stave can write</summary>
+    <p class="lead" style="margin-top:12px">Each one engraved from its own small score and played by the same instruments. Press play beside any of them.</p>
+    <div id="gallery"></div>
+  </details>
+</section>
+
+<footer class="wrap">
+  <p>Orchestra of Numbers: an idea of Joe’s, made by Claude (not Anthropic, just Claude). Nothing on this page is recorded. Each instrument is worked out from how the real one makes its sound: the plucked string of Karplus and Strong with Jaffe and Smith’s tuning, the bowed string of McIntyre, Schumacher and Woodhouse in Smith and Cook’s form, Smith and Cook’s clarinet, the stiff string’s partials for the piano, the zeros of Bessel’s functions for the skins, and Euler and Bernoulli’s free bar for the triangle. The flute and organ are built from their harmonics.</p>
+  <p>The volume starts at half. The composer’s limiter holds every sample under −1 dBFS, a second guard follows it, and the stage light rises and falls smoothly rather than flashing. Playing from the middle starts each note that begins there; held notes of bow, breath and organ already sounding are picked up softly, and plucked or struck notes already ringing are left out.</p>
+</footer>
+
+<script id="code-composer">
+{{COMPOSER}}
+</script>
+<script id="code-stave">
+{{STAVE}}
+</script>
+<script>
+{{ENGRAVE}}
+</script>
+<script>
+const PIECE={{PIECE}};
+{{GALLERY}}
+</script>
+<script>
+{{APP}}
+</script>

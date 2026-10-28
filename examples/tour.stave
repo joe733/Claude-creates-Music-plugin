@@ -1,0 +1,29 @@
+title A Tour of the Twelve
+tempo 96
+time 4/4
+key G major
+
+bar 1
+violin:   mf (G4q A4q B4q D5q | G5h.) rq |
+bar 3
+cello:    mf (G2q D3q G3q B3q | D4h.) rq |
+bar 5
+harp:     mf [G3 B3 D4 G4]h{arp} [D4 G4 B4 D5]h{arp} | G5q D5q B4q G4q |
+bar 7
+guitar:   mf [G2 D3 G3 B3 D4 G4]h{arp} [C3 G3 C4 E4 G4]h{arp} | [D3 A3 D4 F#4]w{arp} |
+bar 9
+bass:     mf G1q' G2q' D2q B1q | C2q' C3q' A1h |
+bar 11
+flute:    mf (D6q B5q G5q A5q | B5h.) rq |
+bar 13
+clarinet: mf (G4q B4q D5q G5q | F#5h.) rq |
+bar 15
+piano:    mf [G3 B3 D4]q D5e E5e F#5q G5q | ped [C4 E4 G4 C5]h * ped [D4 F#4 A4 D5]h * |
+bar 17
+organ:    {stop:principal} mf [G3 B3 D4]h [A3 C4 E4]h | [B3 D4 G4]w |
+bar 19
+drum:     mf G1q D2q G2q> D2q | G1h rh |
+bar 21
+snare:    mf xq xe xe xq> xq | p < xh{roll} f xq> rq |
+bar 23
+triangle: mf xq x'q xq x'q | xw |
